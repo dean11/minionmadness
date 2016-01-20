@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Graphics\Graphics.vcxproj", "{1685DDBC-7945-4A66-9D94-B5E58042F754}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Utilities\Utilities.vcxproj", "{DA197470-110B-40A3-A7F7-59B3D736F0A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -27,6 +29,14 @@ Global
 		{1685DDBC-7945-4A66-9D94-B5E58042F754}.Release|Win32.Build.0 = Release|Win32
 		{1685DDBC-7945-4A66-9D94-B5E58042F754}.Release|x64.ActiveCfg = Release|x64
 		{1685DDBC-7945-4A66-9D94-B5E58042F754}.Release|x64.Build.0 = Release|x64
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Debug|ARM.ActiveCfg = Debug|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Debug|Win32.Build.0 = Debug|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Debug|x64.ActiveCfg = Debug|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Release|ARM.ActiveCfg = Release|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Release|Win32.ActiveCfg = Release|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Release|Win32.Build.0 = Release|Win32
+		{DA197470-110B-40A3-A7F7-59B3D736F0A0}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

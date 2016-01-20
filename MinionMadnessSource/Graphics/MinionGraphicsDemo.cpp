@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	while (!quit)
 	{
 		gfx->BeginScene();
-			//plane->Render();
+			plane->Render();
 		gfx->EndScene();
 	}
 

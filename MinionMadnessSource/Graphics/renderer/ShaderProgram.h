@@ -16,24 +16,26 @@ public:
 		ShaderType_tessEvaluation = GL_TESS_EVALUATION_SHADER,
 		ShaderType_geometry = GL_GEOMETRY_SHADER,
 	};
-	struct ShaderInitDesc
+	struct ShaderProgramDesc
 	{
-		std::string vertexShader_path;
-		std::string fragmentShader_path;
-		std::string geometryShader_path;
-		std::string computeShader_path;
-		std::string tessControl_path;
-		std::string tessEvaluation_path;
+		const char* shaderName;
+		const char* vertexShader_path;
+		const char* tessControl_path;
+		const char* tessEvaluation_path;
+		const char* geometryShader_path;
+		const char* fragmentShader_path;
+		const char* computeShader_path;
 	};
 
-public:
-	operator GLuint() { return shaderProgram; }
 public:
 	ShaderProgram();
 	virtual~ShaderProgram();
 
-	int Create(ShaderInitDesc& desc);
+	int Create(const ShaderProgramDesc& desc);
 	void Release();
+
+public:
+	operator GLuint() { return shaderProgram; }
 
 private:
 	int LoadShaderFromFile(const char* shaderPath, ShaderType shaderType);

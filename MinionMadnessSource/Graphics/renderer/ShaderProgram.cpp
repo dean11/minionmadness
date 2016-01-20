@@ -3,6 +3,8 @@
 #include <string>
 #include <NoEdgeUtilities.h>
 
+#define SHADER_DIR	"../../Graphics/renderer/shaders/"
+#define combineCharPtr(first, second) first second
 
 ShaderProgram::ShaderProgram()
 {
@@ -17,8 +19,11 @@ int ShaderProgram::LoadShaderFromFile(const char* file, ShaderType shaderType)
 {
 	if (!file || !strcmp(file, "")) return -1;
 
+	std::string path = SHADER_DIR;
+	path.append( file );
+
 	std::string buff;
-	if (NoEdgeUtilies::Stream::ReadFileContentAsByte(file, buff))
+	if (NoEdgeUtilies::Stream::ReadFileContentAsByte(path.c_str(), buff))
 	{
 		const GLchar* arr[] = { buff.c_str() };
 		GLuint shader = glCreateShader(shaderType);
@@ -50,27 +55,27 @@ int ShaderProgram::LoadShaderFromFile(const char* file, ShaderType shaderType)
 	}
 	return 0;
 }
-int ShaderProgram::Create(ShaderInitDesc& desc)
+int ShaderProgram::Create(const ShaderProgramDesc& desc)
 {
 	this->shaderProgram = glCreateProgram();
 	GLuint shader = 0;
 
-	if (LoadShaderFromFile(desc.vertexShader_path.c_str(), ShaderType_vertex) == 0)				
+	if (LoadShaderFromFile(desc.vertexShader_path, ShaderType_vertex) == 0)				
 		return false;
 		
-	if (LoadShaderFromFile(desc.fragmentShader_path.c_str(), ShaderType_fragment) == 0)
+	if (LoadShaderFromFile(desc.fragmentShader_path, ShaderType_fragment) == 0)
 		return false;
 
-	if (LoadShaderFromFile(desc.computeShader_path.c_str(), ShaderType_compute) == 0)
+	if (LoadShaderFromFile(desc.computeShader_path, ShaderType_compute) == 0)
 		return false;
 		
-	if (LoadShaderFromFile(desc.tessControl_path.c_str(), ShaderType_tessControl) == 0)
+	if (LoadShaderFromFile(desc.tessControl_path, ShaderType_tessControl) == 0)
 		return false;
 		
-	if (LoadShaderFromFile(desc.tessEvaluation_path.c_str(), ShaderType_tessEvaluation) == 0)
+	if (LoadShaderFromFile(desc.tessEvaluation_path, ShaderType_tessEvaluation) == 0)
 		return false;
 		
-	if (LoadShaderFromFile(desc.geometryShader_path.c_str(), ShaderType_geometry) == 0)
+	if (LoadShaderFromFile(desc.geometryShader_path, ShaderType_geometry) == 0)
 		return false;
 
 	return true;

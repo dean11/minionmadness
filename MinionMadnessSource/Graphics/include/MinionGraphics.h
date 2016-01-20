@@ -49,9 +49,13 @@ public:
 	virtual void BeginText() = 0;
 	virtual void EndText() = 0;
 
+	/* Returns nullptr if failed */
 	virtual MinionModel* CreateModel(const char* file) = 0;
+	/* Returns nullptr if failed */
 	virtual MinionModel* CreateModel_Plane(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0f, float tmax = 1.0f, const char* diffuseTexture = 0) = 0;
+	/* Returns nullptr if failed */
 	virtual MinionModel* CreateModel_Cube(float width, float height, float depth) = 0;
+	/* Returns nullptr if failed */
 	virtual MinionModel* CreateModel_Sphere(float radius) = 0;
 
 protected:

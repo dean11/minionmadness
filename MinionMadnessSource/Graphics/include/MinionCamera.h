@@ -4,8 +4,8 @@
 class MinionCamera
 {
 public:
-	MinionCamera();
-	~MinionCamera();
+	MinionCamera(){}
+	~MinionCamera(){}
 
 private:
 

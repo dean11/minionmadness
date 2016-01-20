@@ -1,5 +1,10 @@
 #include "Graphics_impl.h"
 
+#include "models\Plane.h"
+#include "models\Sphere.h"
+#include "models\Cube.h"
+#include "models\Mesh.h"
+
 #include <NoEdgeUtilities.h>
 
 #include <string>
@@ -31,10 +36,11 @@ MinionGraphics::~MinionGraphics()
 Graphics_impl::Graphics_impl()
 {
 	this->errorstr = 0;
+	this->graphicsIsInitiated = false;
 }
 Graphics_impl::~Graphics_impl()
 {
-
+	this->graphicsIsInitiated = false;
 }
 
 int Graphics_impl::InitiateMinionGraphics(const MinionGraphicsInitDesc& desc)
@@ -44,8 +50,6 @@ int Graphics_impl::InitiateMinionGraphics(const MinionGraphicsInitDesc& desc)
 	this->options.windowHeight = desc.windowHeight;
 	this->options.windowX = desc.windowX;
 	this->options.windowY = desc.windowY;
-
-	this->options.shaderDirectory = "../../Graphics/renderer/shaders/";
 	this->options.backgroundColor = glm::vec3(0.2f, 0.2f, 1.0f);
 
 	InitializeOpenGL();
@@ -54,10 +58,7 @@ int Graphics_impl::InitiateMinionGraphics(const MinionGraphicsInitDesc& desc)
 }
 int Graphics_impl::InitializeOpenGL()
 {
-	bool isInitialized = false;
-	if (this->window) isInitialized = true;
-
-	if (isInitialized)
+	if (this->graphicsIsInitiated)
 	{
 		return 2;
 	}
@@ -75,7 +76,7 @@ int Graphics_impl::InitializeOpenGL()
 	if (!this->window)
 	{
 		glfwTerminate();
-		return -1;
+		return 0;
 	}
 
 	/* Make the window's context current */
@@ -86,14 +87,14 @@ int Graphics_impl::InitializeOpenGL()
 	if (glewErr != GLEW_OK)
 	{
 		this->errorstr = (const char*)glewGetErrorString(glewErr);
-		return -1;
+		return 0;
 	}
 
 	//Create Shaders
 	if (this->CreateShaders() == 0)
-	{
+		return 0;
 
-	}
+	this->graphicsIsInitiated = true;
 
 	return 1;
 }
@@ -111,6 +112,7 @@ void Graphics_impl::Release()
 
 		delete minionGraphicsPtr;
 		minionGraphicsPtr = 0;
+
 	}
 }
 const char* Graphics_impl::GetLastError()
@@ -143,10 +145,6 @@ int Graphics_impl::SetOption(const char* option, ...)
 		this->options.windowX = va_arg(vl, int);
 		this->options.windowY = va_arg(vl, int);
 	}
-	else if (p == "shaderDir")
-	{
-		this->options.shaderDirectory = va_arg(vl, const char*);
-	}
 	else if (p == "bgCol")
 	{
 		this->options.backgroundColor[0] = (float)va_arg(vl, double);
@@ -170,6 +168,14 @@ void Graphics_impl::BeginScene()
 }
 void Graphics_impl::EndScene()
 {
+	/*
+	*	render to shadowmaps
+	*	render to rendertargets
+	*	render transparent
+	*	render GUI
+	*	render text
+	*	Present final image
+	*/
 	glfwSwapBuffers(this->window);
 	glfwPollEvents();
 }
@@ -191,21 +197,34 @@ void Graphics_impl::EndText()
 }
 MinionModel* Graphics_impl::CreateModel(const char* file)
 {
+	Model *m = new Mesh(file);
+	this->models.push_back(m);
+	return this->models[this->models.size() - 1];
 	return 0;
 }
 MinionModel* Graphics_impl::CreateModel_Plane(float xsize, float zsize, int xdivs, int zdivs, float smax, float tmax, const char* diffuseTexture)
 {
-	return 0;
+	Model *m = new Plane(xsize, zsize, xdivs, zdivs, smax, tmax);
+	this->models.push_back(m);
+	return this->models[this->models.size() - 1];
 }
 MinionModel* Graphics_impl::CreateModel_Cube(float width, float height, float depth)
 {
-	return 0;
+	Model *m = new Cube(width, height, depth);
+	this->models.push_back(m);
+	return this->models[this->models.size() - 1];
 }
 MinionModel* Graphics_impl::CreateModel_Sphere(float radius)
 {
-	return 0;
+	Model *m = new Sphere(radius);
+	this->models.push_back(m);
+	return this->models[this->models.size() - 1];
 }	
 
+Graphics_impl* Graphics_impl::GetInstancePointer()
+{
+	return minionGraphicsPtr;
+}
 
 void Graphics_impl::glError_callback(int error, const char* description)
 {

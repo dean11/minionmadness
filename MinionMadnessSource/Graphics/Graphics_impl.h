@@ -5,6 +5,20 @@
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "Opengl32.lib")
 
+#if defined(_DEBUG)
+	#pragma comment(lib, "BulletCollision_Debug.lib")
+	#pragma comment(lib, "BulletDynamics_Debug.lib")
+	#pragma comment(lib, "BulletSoftBody_Debug.lib")
+	#pragma comment(lib, "LinearMath_Debug.lib")
+	#pragma comment(lib, "log4cpp_Debug.lib")
+#else
+	#pragma comment(lib, "BulletCollision.lib")
+	#pragma comment(lib, "BulletDynamics.lib")
+	#pragma comment(lib, "BulletSoftBody.lib")
+	#pragma comment(lib, "LinearMath.lib")
+	#pragma comment(lib, "log4cpp.lib")
+#endif
+
 #include "include/MinionGraphics.h"
 
 #include <NoEdgeUtilities.h>
@@ -20,6 +34,12 @@
 #include "renderer/ShadowMapRenderer.h"
 #include "renderer/GUIRenderer.h"
 #include "renderer/ShaderProgram.h"
+#include "models/Model.h"
+
+//Is already defines
+#undef APIENTRY
+#include "log4cpp\Appender.hh"
+#include "log4cpp\AppendersFactory.hh"
 
 
 class Graphics_impl	:public MinionGraphics
@@ -28,7 +48,7 @@ public:
 	Graphics_impl();
 	virtual~Graphics_impl();
 
-	int InitiateMinionGraphics(const MinionGraphicsInitDesc&)override;
+	int InitiateMinionGraphics(const MinionGraphicsInitDesc&) override;
 	void Release()override;
 	const char* GetLastError()override;
 
@@ -49,10 +69,10 @@ public:
 	MinionModel* CreateModel_Sphere(float radius) override;
 
 private:
+	Graphics_impl* GetInstancePointer();
 	int InitializeOpenGL();
 	int CreateShaders();
 	static void glError_callback(int error, const char* description);
-	
 
 private:
 	struct RendererOptions
@@ -60,7 +80,6 @@ private:
 		int windowWidth, windowHeight;
 		int windowX, windowY;
 		const char* windowTitle;
-		const char* shaderDirectory;
 		glm::vec3 backgroundColor;
 
 		RendererOptions()
@@ -69,7 +88,6 @@ private:
 			, windowHeight(480)
 			, windowX(0)
 			, windowY(0)
-			, shaderDirectory("")
 		{}
 	};
 
@@ -77,11 +95,15 @@ private:
 	RendererOptions options;
 	const char* errorstr;
 	GLFWwindow* window;
-	std::map<const char*, ShaderProgram> shaders;
-	unsigned int numberOfShaders;
+	
 	DeferredRenderer deferredRenderer;
 	ShadowMapRenderer shadowmapRenderer;
 	GUIRenderer guiRenderer;
+
+	std::map<const char*, ShaderProgram> shaders;
+	std::vector<Model*> models;
+
+	bool graphicsIsInitiated;
 };
 
 #endif // !MINION_GRAPHICS

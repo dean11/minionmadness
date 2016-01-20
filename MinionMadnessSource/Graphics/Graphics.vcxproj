@@ -139,6 +139,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -147,7 +148,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -155,6 +157,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -163,7 +166,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -171,6 +175,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -179,7 +184,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -189,6 +195,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -199,7 +206,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -209,6 +217,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -219,7 +228,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -229,6 +239,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../ExternalDependencies/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -239,42 +250,50 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /f /d "$(SolutionDir)../ExternalDependencies/lib/$(PlatformShortName)/*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MinionGraphicsDemo.cpp" />
+    <ClCompile Include="models\Model.cpp" />
+    <ClCompile Include="renderer\Camera.cpp" />
     <ClCompile Include="renderer\DeferredRenderer.cpp" />
     <ClCompile Include="Graphics_impl.cpp" />
     <ClCompile Include="renderer\GUIRenderer.cpp" />
     <ClCompile Include="renderer\ShaderProgram.cpp" />
     <ClCompile Include="renderer\Shader_impl.cpp" />
     <ClCompile Include="renderer\ShadowMapRenderer.cpp" />
-    <ClCompile Include="renderer\shapes\Cube.cpp" />
-    <ClCompile Include="renderer\shapes\Mesh.cpp" />
-    <ClCompile Include="renderer\shapes\Plane.cpp" />
-    <ClCompile Include="renderer\shapes\Sphere.cpp" />
+    <ClCompile Include="models\Cube.cpp" />
+    <ClCompile Include="models\Mesh.cpp" />
+    <ClCompile Include="models\Plane.cpp" />
+    <ClCompile Include="models\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MinionCamera.h" />
     <ClInclude Include="include\MinionGraphics.h" />
     <ClInclude Include="include\MinionModel.h" />
     <ClInclude Include="include\MinionSprite.h" />
+    <ClInclude Include="renderer\Camera.h" />
     <ClInclude Include="renderer\DeferredRenderer.h" />
     <ClInclude Include="renderer\GUIRenderer.h" />
     <ClInclude Include="renderer\misc\SaveViewport.h" />
-    <ClInclude Include="renderer\Model.h" />
+    <ClInclude Include="models\Model.h" />
     <ClInclude Include="Graphics_impl.h" />
     <ClInclude Include="renderer\ShaderProgram.h" />
     <ClInclude Include="renderer\ShadowMapRenderer.h" />
-    <ClInclude Include="renderer\shapes\Cube.h" />
-    <ClInclude Include="renderer\shapes\Mesh.h" />
-    <ClInclude Include="renderer\shapes\Plane.h" />
-    <ClInclude Include="renderer\shapes\Sphere.h" />
+    <ClInclude Include="models\Cube.h" />
+    <ClInclude Include="models\Mesh.h" />
+    <ClInclude Include="models\Plane.h" />
+    <ClInclude Include="models\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="renderer\shaders\basic_fs.glsl" />
     <None Include="renderer\shaders\basic_vs.glsl" />
+    <None Include="renderer\shaders\deferredGather_fs.glsl" />
+    <None Include="renderer\shaders\deferredGather_vs.glsl" />
+    <None Include="renderer\shaders\deferredRender_fs.glsl" />
+    <None Include="renderer\shaders\deferredRender_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
