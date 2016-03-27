@@ -1,0 +1,1 @@
+python graphics_debug.py $@
