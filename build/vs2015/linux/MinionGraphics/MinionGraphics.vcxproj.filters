@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{88f2b22c-3dc0-4883-b84b-7c2395d93f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="models">
+      <UniqueIdentifier>{1ff93c0c-3f88-4fc3-93ea-2f285735512c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rendering">
+      <UniqueIdentifier>{1e1d77ad-795d-4040-8588-2d565b619385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rendering\renderers">
+      <UniqueIdentifier>{48ff23b2-9a99-458d-a705-b91df65a1e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{e16ab31f-ebeb-4ccc-b640-777984c8475e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionWindow.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionGraphics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionLight.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionModel.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionCamera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Cube.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Mesh.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\MeshLoader.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Model.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Plane.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Sphere.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Triangle.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\GUIRenderer.h">
+      <Filter>rendering\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\Renderer.h">
+      <Filter>rendering\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\ShadowMapRenderer.h">
+      <Filter>rendering\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\BasicRenderer.h">
+      <Filter>rendering\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\DeferredRenderer.h">
+      <Filter>rendering\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\SaveViewport.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\ShaderProgram.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\Texture.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\Camera.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\RenderTexture.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\SaveFrameBuffer.h">
+      <Filter>rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\Graphics_impl.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\GraphicsWindow.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\autolink_windows.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Cube.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Mesh.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\MeshLoader.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Model.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Plane.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Sphere.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Triangle.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\GUIRenderer.cpp">
+      <Filter>rendering\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\ShadowMapRenderer.cpp">
+      <Filter>rendering\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\DeferredRenderer.cpp">
+      <Filter>rendering\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\ShaderProgram.cpp">
+      <Filter>rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\Texture.cpp">
+      <Filter>rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\Camera.cpp">
+      <Filter>rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\RenderTexture.cpp">
+      <Filter>rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\GraphicsWindow.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\MinionGraphicsDemo.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\Graphics_impl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredGeometryPass.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredGeometryPass.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredRendererPointLightPass.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredRenderLightPass.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\basic_fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\basic_vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

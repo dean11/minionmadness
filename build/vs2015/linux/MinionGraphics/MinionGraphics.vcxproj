@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4c7d3fc7-699e-4b8e-8520-9d2c93691399}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>MinionGraphics</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{2238F9CD-F817-4ECC-BD14-2524D2669B35}</LinuxProjectType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <OutDir>$(SolutionDir)..\..\..\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformShortName)$(Configuration)</TargetName>
+    <IncludePath>$(IncludePath);$(ISenseIncludePath);$(LOCALLIB)/include</IncludePath>
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\autolink_windows.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\GraphicsWindow.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\Graphics_impl.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionCamera.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionGraphics.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionLight.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionModel.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionTypes.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\include\MinionWindow.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Cube.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Mesh.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\MeshLoader.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Model.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Plane.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Sphere.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\models\Triangle.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\Camera.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\BasicRenderer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\DeferredRenderer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\GUIRenderer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\Renderer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\renderers\ShadowMapRenderer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\RenderTexture.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\SaveFrameBuffer.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\SaveViewport.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\ShaderProgram.h" />
+    <ClInclude Include="..\..\..\..\source\MinionGraphics\rendering\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\GraphicsWindow.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\Graphics_impl.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\MinionGraphicsDemo.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Cube.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Mesh.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\MeshLoader.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Model.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Plane.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Sphere.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\models\Triangle.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\DeferredRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\GUIRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\renderers\ShadowMapRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\RenderTexture.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\ShaderProgram.cpp" />
+    <ClCompile Include="..\..\..\..\source\MinionGraphics\rendering\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\basic_fs.glsl" />
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\basic_vs.glsl" />
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredGeometryPass.fs" />
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredGeometryPass.vs" />
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredRendererPointLightPass.fs" />
+    <None Include="..\..\..\..\source\MinionGraphics\shaders\deferredRenderLightPass.vs" />
+  </ItemGroup>
+  <ItemDefinitionGroup />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

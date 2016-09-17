@@ -1,7 +1,6 @@
 #include "logger.h"
 
 #include <ctime>
-#include <NoEdgeUtilities.h>
 
 std::map<std::string, std::shared_ptr<Logger>> Logger::loggers;
 
