@@ -43,7 +43,7 @@ namespace debug
 
 
 // Method implemented from the MinionGraphics.h interface
-MinionGraphics* MinionGraphics::GetGraphicsHandle()
+void MinionGraphics::GetGraphicsHandle(MinionGraphics** graphicsHandlerPtr)
 {
 	if (!minionGraphicsPtr)
 	{
@@ -52,12 +52,30 @@ MinionGraphics* MinionGraphics::GetGraphicsHandle()
 
 	minionGraphicsPtr_count++;
 	
-	return minionGraphicsPtr;
+	*graphicsHandlerPtr = minionGraphicsPtr;
+}
+void MinionGraphics::ReleaseGraphicsHandle(MinionGraphics** graphicsHandlerPtr)
+{
+	if (!(*graphicsHandlerPtr))
+		return;
+
+	*graphicsHandlerPtr = nullptr;
+	minionGraphicsPtr_count--;
+
+	if (minionGraphicsPtr_count == 0)
+	{
+		delete minionGraphicsPtr;
+		minionGraphicsPtr = 0;
+
+	}
 }
 MinionGraphics::~MinionGraphics()
 {
 
 }
+// ----------------------------------------------------------------------
+
+
 
 Graphics_impl::Graphics_impl()
 {
@@ -65,18 +83,30 @@ Graphics_impl::Graphics_impl()
 }
 Graphics_impl::~Graphics_impl()
 {
-	this->graphicsIsInitiated = false;
+	for (size_t i = 0; i < this->models.size(); i++)
+	{
+		this->models[i]->Release();
+		delete this->models[i];
+		this->models[i] = 0;
+	}
+	
+	delete this->window;
+	
+	glfwTerminate();
 }
 
-MinionErrorCode Graphics_impl::InitiateGraphics(MinionWindow* window)
+MinionErrorCode Graphics_impl::InitializeRenderWindow(MinionWindow** out_window, unsigned int width, unsigned int height, const char* title)
 {
-	if (!window)
-		return MinionErrorCode_NoWindowSet;
-
-	this->window = (GraphicsWindow*)window;
-
 	MinionErrorCode result = MinionErrorCode_SUCESS;
-	
+
+	// Initieate window
+	{
+		result = InitializeWindow(width, height, title);
+		if (result != MinionErrorCode_SUCESS)
+			return result;
+		(*out_window) = this->window;
+	}
+
 	// Initiate OpenGL
 	result = InitializeOpenGL();
 	if (result != MinionErrorCode_SUCESS)
@@ -98,27 +128,6 @@ MinionErrorCode Graphics_impl::InitiateGraphics(MinionWindow* window)
 	Logger::Debug(loggerName, (char*)glGetString(GL_VENDOR));
 
 	return result;
-}
-void Graphics_impl::Release()
-{
-	minionGraphicsPtr_count--;
-
-	if (minionGraphicsPtr_count == 0)
-	{
-		for (size_t i = 0; i < this->models.size(); i++)
-		{
-			this->models[i]->Release();
-			delete this->models[i];
-			this->models[i] = 0;
-		}
-		//Release resources
-		glfwTerminate();
-		this->window = 0;
-
-		delete minionGraphicsPtr;
-		minionGraphicsPtr = 0;
-
-	}
 }
 
 void Graphics_impl::QueueForRendering(MinionModel* minionModel)
@@ -154,6 +163,10 @@ void Graphics_impl::QueueForRendering(MinionModel* minionModel)
 //
 //}
 
+void Graphics_impl::UpdateGraphics(float dt)
+{
+
+}
 void Graphics_impl::RenderGraphics()
 {
 	//Clear Previous stuff on backbuffer
@@ -179,10 +192,6 @@ void Graphics_impl::RenderGraphics()
 	//Present the scene by swapping with backbuffer
 	if (this->window)
 		glfwSwapBuffers(*this->window);
-}
-void Graphics_impl::UpdateGraphics(float dt)
-{
-	
 }
 
 MinionModel* Graphics_impl::CreateModel_FromFile(const char* file)
@@ -234,11 +243,7 @@ const std::string& Graphics_impl::GetLastError() const
 	return this->errorstr;
 }
 
-void Graphics_impl::SetRenderWindow(MinionWindow* win)
-{
-	this->window = (GraphicsWindow*)win;
-	glfwMakeContextCurrent(*this->window);
-}
+
 void Graphics_impl::SetClearColor(float r, float g, float b)
 {
 	if (this->graphicsIsInitiated)
@@ -255,7 +260,10 @@ void Graphics_impl::SetEnableLogging(bool toggle)
 		Logger::CreateLogger(loggerName.c_str(), "");
 	}
 }
-
+MinionWindow* Graphics_impl::GetWindow()
+{
+	return this->window;
+}
 
 
 
@@ -263,11 +271,36 @@ void Graphics_impl::SetEnableLogging(bool toggle)
 /*****************************************************************************************/
 /********************************* PRIVATE METHODS ***************************************/
 /*****************************************************************************************/
+MinionErrorCode Graphics_impl::InitializeWindow(unsigned int width, unsigned int height, const char* title)
+{
+	//Use gflw to create window
+	/* Initialize the library */
+	if (glfwInit() == GLFW_FALSE)
+	{
+		(*window) = nullptr;
+		return MinionErrorCode_FAIL;
+	}
+	
+	/* Creates a windowed mode window and its OpenGL context */
+	GLFWwindow *glfwWindow = glfwCreateWindow(width, height, title, NULL, NULL);
+	
+	if (!glfwWindow)
+	{
+		glfwTerminate();
+		(*window) = nullptr;
+		return MinionErrorCode_FAIL;
+	}
+
+	glfwMakeContextCurrent(glfwWindow);
+
+	this->window = new Window_impl(glfwWindow);
+
+	return MinionErrorCode_SUCESS;
+}
 MinionErrorCode Graphics_impl::InitializeOpenGL()
 {
 	if (this->graphicsIsInitiated)	return MinionErrorCode_SUCESS;
 	if (glfwInit() == GL_FALSE)		return MinionErrorCode_FAIL;
-	if (this->window == nullptr)	return MinionErrorCode_NoWindowSet;
 
 	//We need to make sure the window is the current context before initializing
 	
@@ -281,7 +314,7 @@ MinionErrorCode Graphics_impl::InitializeOpenGL()
 		if (this->logging)	Logger::Debug(loggerName, this->errorstr.c_str());
 			return MinionErrorCode_FAIL;
 	}
-
+	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);

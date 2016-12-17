@@ -5,15 +5,32 @@
 
 #pragma comment(lib, "opengl32.lib")
 
+#if _MSC_VER == 1900
+	#define VS_VERSION "VS2015"
+#elif _MSC_VER == 1800
+	#define VS_VERSION "VS2013"
+#endif
+
 #if defined(DEBUG) || defined (_DEBUG)
-//#pragma comment(lib, "glew32sd.lib")
-//#pragma comment(lib, "glfw3d.lib")
-#pragma comment(lib, "glew32_x86_Debug_VS2015.lib")
-#pragma comment(lib, "glfw3_x86_Debug_VS2015.lib")
-#pragma comment(lib, "Utilitiesx86Debug.lib")
+	#if defined _M_X64 
+		#pragma comment(lib, "glew32_x64_Debug_" VS_VERSION ".lib")
+		#pragma comment(lib, "glfw3_x64_Debug_" VS_VERSION ".lib")
+		#pragma comment(lib, "Utilitiesx64Debug.lib")
+	#else
+		#pragma comment(lib, "glew32_x86_Debug_" VS_VERSION ".lib")
+		#pragma comment(lib, "glfw3_x86_Debug_" VS_VERSION ".lib")
+		#pragma comment(lib, "Utilitiesx86Debug.lib")
+	#endif
 #else
-#pragma comment(lib, "glew32s.lib")
-#pragma comment(lib, "glfw3.lib")
+	#if defined _M_X64 
+		#pragma comment(lib, "glew32_x64_Release_" VS_VERSION ".lib")
+		#pragma comment(lib, "glfw3_x64_Release_" VS_VERSION ".lib")
+		#pragma comment(lib, "Utilitiesx64Release.lib")
+	#else
+		#pragma comment(lib, "glew32_x86_Release_" VS_VERSION ".lib")
+		#pragma comment(lib, "glfw3_x86_Release_" VS_VERSION ".lib")
+		#pragma comment(lib, "Utilitiesx86Debug.lib")
+	#endif
 #endif
 
 #endif

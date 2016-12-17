@@ -5,6 +5,7 @@
 #include "MinionWindow.h"
 
 #include <string>
+#include <functional>
 
 namespace Minion
 {
@@ -15,8 +16,6 @@ namespace Minion
 	{
 		MinionErrorCode_FAIL,
 		MinionErrorCode_SUCESS,
-
-		MinionErrorCode_NoWindowSet,
 	};
 	/*
 	*	To get a reference of MinionGraphics, use the static function GetGraphicsPointer();
@@ -25,19 +24,22 @@ namespace Minion
 	class MinionGraphics
 	{
 	public:
-		static MinionGraphics* GetGraphicsHandle();
+		static void GetGraphicsHandle(MinionGraphics** graphicsHandlerPtr);
+		static void ReleaseGraphicsHandle(MinionGraphics** graphicsHandlerPtr);
+
+	protected:
+		virtual ~MinionGraphics();
 
 	public:
-		virtual MinionErrorCode InitiateGraphics(MinionWindow* renderWindow) = 0;
-		virtual void Release() = 0;
+		virtual MinionErrorCode InitializeRenderWindow(MinionWindow** out_window, unsigned int width = 640, unsigned int height = 420, const char* title = "MininonGraphics") = 0;
 
 		virtual void QueueForRendering(MinionModel*) = 0;
 		//virtual void QueueForRendering(MinionGUI* g) = 0;
 		//virtual void QueueForRendering(MinionText* t) = 0;
 		//virtual void QueueForRendering(MinionScene* s) = 0;
 
-		virtual void RenderGraphics() = 0;
 		virtual void UpdateGraphics(float dt) = 0;
+		virtual void RenderGraphics() = 0;
 
 		virtual MinionModel* CreateModel_FromFile(const char* file) = 0;
 		virtual MinionModel* CreateModel_Plane(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0f, float tmax = 1.0f, const char* diffuseTexture = 0) = 0;
@@ -47,12 +49,11 @@ namespace Minion
 
 		virtual const std::string& GetLastError() const = 0;
 
-		virtual void SetRenderWindow(MinionWindow* win) = 0;
 		virtual void SetClearColor(float r, float g, float b) = 0;
 		virtual void SetEnableLogging(bool toggle) = 0;
 
-	protected:
-		virtual ~MinionGraphics();
+		virtual MinionWindow* GetWindow() = 0;
+
 	};
 }
 

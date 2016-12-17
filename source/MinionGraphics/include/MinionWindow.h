@@ -1,11 +1,13 @@
 #ifndef MINION_WINDOW_H
 #define MINION_WINDOW_H
 
+#include <functional>
+#include <memory>
 
 namespace Minion
 {
 	/*
-	*	MinionWindow is a window wrapper used to create a window and manage event related to the created window.
+	*	MinionWindow is a window wrapper (that uses GLFW) used to create a window and manage event related to the created window.
 	*	Create a window by calling CreateWindow method
 	*/
 	class MinionWindow
@@ -23,23 +25,37 @@ namespace Minion
 			WindowPosition_Top,
 			WindowPosition_Bottom,
 		};
-	public:
-		static MinionWindow* CreateMinionWindow(unsigned int width, unsigned int height, const char* title, bool mainWindow);
+		enum WindowReturnCode
+		{
+			WindowReturnCode_Success,
+			WindowReturnCode_Failed,
+		};
+		enum CallbackReturnCode
+		{
+			CallbackReturnCode_Close,
+			CallbackReturnCode_Continue,
+		};
+
+	protected:
+		virtual~MinionWindow();
 
 	public:
-		typedef void(*OnClose)(MinionWindow*, void* data);
-		typedef void(*OnFocus)(MinionWindow*, bool focus, void* data);
-		typedef void(*OnIconify)(MinionWindow*, bool iconify, void* data);
-		typedef void(*OnPosition)(MinionWindow*, int x, int y, void* data);
-		typedef void(*OnRefresh)(MinionWindow*, void* data);
-		typedef void(*OnSize)(MinionWindow*, int w, int h, void* data);
+		typedef std::function<void(MinionWindow* sender)> OnClose;
+		typedef std::function<void(MinionWindow* sender, int focus)> OnFocus;
+		typedef std::function<void(MinionWindow* sender, int iconify)> OnIconify;
+		typedef std::function<void(MinionWindow* sender, int x, int y)> OnPosition;
+		typedef std::function<void(MinionWindow* sender)> OnRefresh;
+		typedef std::function<void(MinionWindow* sender, int width, int height)> OnSize;
 
 	public:
-		virtual void Release() = 0;
 
-		virtual int ProcessEvents() = 0;
+		/*
+		* Starts processing window events and calls callback each frame.
+		* This function is blocking.
+		* Return value of the callback will tell the window what to do next.
+		*/
+		virtual WindowReturnCode Run(std::function<CallbackReturnCode(MinionWindow*)>) = 0;
 
-		virtual void SetCallbackData(void*) = 0;
 		virtual void SetOnClose(OnClose) = 0;
 		virtual void SetOnFocus(OnFocus) = 0;
 		virtual void SetOnIconify(OnIconify) = 0;

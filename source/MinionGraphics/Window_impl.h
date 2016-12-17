@@ -7,21 +7,20 @@
 #include <vector>
 
 #include "include/MinionWindow.h"
+#include <NoEdgeUtilities.h>
 #include <GID.h>
 
 using namespace Minion;
 
-class GraphicsWindow	:public MinionWindow
+class Window_impl :public MinionWindow
 {
 public:
-	GraphicsWindow(GLFWwindow*);
-	virtual~GraphicsWindow();
+	Window_impl(GLFWwindow*);
+	virtual~Window_impl();
 
 	operator GLFWwindow*() { return this->window; }
-	void Release() override;
-	int ProcessEvents() override;
+	WindowReturnCode Run(std::function<CallbackReturnCode(MinionWindow*)>) override;
 
-	void SetCallbackData(void*) override;
 	void SetOnClose(OnClose) override;
 	void SetOnFocus(OnFocus) override;
 	void SetOnIconify(OnIconify) override;
@@ -43,17 +42,7 @@ public:
 	void GetPosition(int& x, int& y) const;
 
 private:
-	static void _OnClose(GLFWwindow* win);
-	static void _OnFocus(GLFWwindow*, int);
-	static void _OnIconify(GLFWwindow*, int);
-	static void _OnPos(GLFWwindow*, int x, int y);
-	static void _OnRefresh(GLFWwindow*);
-	static void _OnSize(GLFWwindow*, int, int);
-	static std::vector<GraphicsWindow*> windowCollection;
-
-private:
 	GLFWwindow* window;
-	void* data;
 
 	OnClose onClose;
 	OnFocus onFocus;
@@ -61,8 +50,6 @@ private:
 	OnPosition onPosition;
 	OnRefresh onRefresh;
 	OnSize onSize;
-
-	GraphicsWindow* self = 0;
 };
 
 

@@ -1,5 +1,4 @@
 #include "include/MinionGraphics.h"
-#include "include/MinionWindow.h"
 
 #define PYTHON_OUTPUT
 
@@ -15,67 +14,57 @@ class Application
 public:
 	Application()
 	{
-		this->gfx = 0;
-		this->window = 0;
+		this->gfx = nullptr;
 		
 	}
 	virtual~Application()
 	{
-		if (gfx)	gfx->Release();
-		gfx = 0;
-		window->Release();	
-	}
-	static void OnCloseWin(Minion::MinionWindow* win, void* data)
-	{
-		if (data)
-			data = 0;
+		this->Destroy();
 	}
 	bool Init()
-	{
-		this->window = Minion::MinionWindow::CreateMinionWindow(640, 420, "MininonMADAFACKA!", true);
-
-		if (!this->window) return false;
-		window->SetOnClose(OnCloseWin);
-		
-		gfx = Minion::MinionGraphics::GetGraphicsHandle();
+	{		
+		Minion::MinionGraphics::GetGraphicsHandle(&gfx);
 		gfx->SetEnableLogging(true);
-		if (gfx && !gfx->InitiateGraphics(this->window))
+		if (gfx && !gfx->InitializeRenderWindow(&this->window))
 		{
 			printf(gfx->GetLastError().c_str());
 			return false;
 		}
 		
-
 		//CreateModels();
 
 		return true;
 	}
 	void RunApplication()
 	{
-		bool quit = false;
 		gfx->SetClearColor(0.0f, 1.0f, 1.0f);
-		float r = 0.0f;
-		float delta = -0.01f;
-		//Run program
-		while (!quit)
-		{
-			quit = window->ProcessEvents() == 0;
 
+		window->Run([this](Minion::MinionWindow*)->Minion::MinionWindow::CallbackReturnCode
+		{
 			gfx->UpdateGraphics(0.1f);
-			
+
 			for (Minion::MinionModel* model : this->models)
 			{
 				gfx->QueueForRendering(model);
 			}
 			gfx->RenderGraphics();
-			
+
+			static float r = 0.0f;
+			static float delta = -0.01f;
 			gfx->SetClearColor(0, r, 0);
 			r += delta;
 			if (r > 1.0f)	delta = delta*-1;
 			else if (r < 0.0f) delta = delta*-1;
-		}
+
+			return Minion::MinionWindow::CallbackReturnCode_Continue; 
+		});
+
+		
 	}
-	
+	void Destroy()
+	{
+		Minion::MinionGraphics::ReleaseGraphicsHandle(&gfx);
+	}
 	
 private:
 	bool CreateModels()
@@ -105,6 +94,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		app.RunApplication();
 	}
+
+	app.Destroy();
 
 	return 0;
 }

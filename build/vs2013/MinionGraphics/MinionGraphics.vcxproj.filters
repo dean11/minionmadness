@@ -65,8 +65,8 @@
       <Filter>models</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\MinionGraphics\Graphics_impl.cpp" />
-    <ClCompile Include="..\..\..\source\MinionGraphics\GraphicsWindow.cpp" />
     <ClCompile Include="..\..\..\source\MinionGraphics\MinionGraphicsDemo.cpp" />
+    <ClCompile Include="..\..\..\source\MinionGraphics\Window_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\MinionGraphics\include\MinionCamera.h">
@@ -139,8 +139,8 @@
       <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\MinionGraphics\Graphics_impl.h" />
-    <ClInclude Include="..\..\..\source\MinionGraphics\GraphicsWindow.h" />
     <ClInclude Include="..\..\..\source\MinionGraphics\autolink_windows.h" />
+    <ClInclude Include="..\..\..\source\MinionGraphics\Window_impl.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\source\MinionGraphics\TODO.txt" />
