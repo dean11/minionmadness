@@ -1,0 +1,6 @@
+trace 
+D:\Users\Andersen\Desktop\Development\MinionMadness\output\bin>
+apitrace trace --api gl MinionGraphics_x86_d.exe
+
+D:\Users\Andersen\Desktop\Development\MinionMadness\output\bin>
+qapitrace

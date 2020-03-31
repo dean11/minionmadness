@@ -2,6 +2,7 @@
 #define GUI_RENDERER_H
 
 #include "Renderer.h"
+#include "../../include/MinionCamera.h"
 
 class GUIRenderer :public Renderer
 {
@@ -9,7 +10,7 @@ public:
 	GUIRenderer();
 	virtual~GUIRenderer();
 
-	void Release() override;
+	virtual void ProcessRenderQueue(std::shared_ptr<MinionCamera>& camera) override;
 
 private:
 

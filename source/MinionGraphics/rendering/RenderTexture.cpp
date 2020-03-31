@@ -13,7 +13,7 @@ RenderTexture::RenderTexture()
 }
 RenderTexture::~RenderTexture()
 {
-	for each (auto var in this->renderTextures)
+	for (auto var : this->renderTextures)
 	{
 		if (var.second.renderTargetHandle)			glDeleteRenderbuffersEXT(1, &var.second.renderTargetHandle);
 		if (var.second.renderTargetTextureHandle)	glDeleteTextures(1, &var.second.renderTargetTextureHandle);

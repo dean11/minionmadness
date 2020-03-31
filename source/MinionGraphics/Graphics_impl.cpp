@@ -1,14 +1,12 @@
 ﻿#include "Graphics_impl.h"
 
-#include "models\Plane.h"
-#include "models\Sphere.h"
-#include "models\Cube.h"
-#include "models\Mesh.h"
-#include "models\Triangle.h"
+#include "models/Plane.h"
+#include "models/Sphere.h"
+#include "models/Cube.h"
+#include "models/Mesh.h"
+#include "models/Triangle.h"
 
-#include "../Utilities/logger.h"
-
-#include <NoEdgeUtilities.h>
+#include <utilities.h>
 
 #include <string>
 #include <stdarg.h> 
@@ -25,7 +23,7 @@ namespace debug
 {
 	void GLAPIENTRY glErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
-		Logger::Debug(loggerName, message);
+		//Logger::Debug(loggerName, message);
 	}
 
 	#ifdef DEBUG_DEVEL
@@ -95,27 +93,17 @@ Graphics_impl::~Graphics_impl()
 	glfwTerminate();
 }
 
-MinionErrorCode Graphics_impl::InitializeRenderWindow(MinionWindow** out_window, unsigned int width, unsigned int height, const char* title)
+void Graphics_impl::InitializeGraphics(MinionWindow** out_RenderWindow, unsigned int width, unsigned int height, const char* title)
 {
-	MinionErrorCode result = MinionErrorCode_SUCESS;
+	// Initialize window
+	InitializeWindow(width, height, title);
+	(*out_RenderWindow) = this->window;
 
-	// Initieate window
-	{
-		result = InitializeWindow(width, height, title);
-		if (result != MinionErrorCode_SUCESS)
-			return result;
-		(*out_window) = this->window;
-	}
+	// Initialize OpenGL
+	InitializeOpenGL();
 
-	// Initiate OpenGL
-	result = InitializeOpenGL();
-	if (result != MinionErrorCode_SUCESS)
-		return result;
-
-	//Create Shaders
-	result = this->InitializeRenderers();
-	if (result != MinionErrorCode_SUCESS)
-		return MinionErrorCode_FAIL;
+	//Initialize Shaders
+	InitializeRenderers();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -124,10 +112,8 @@ MinionErrorCode Graphics_impl::InitializeRenderWindow(MinionWindow** out_window,
 		glDebugMessageCallback(debug::glErrorCallback, this);
 	#endif
 
-	Logger::Debug(loggerName, (char*)glGetString(GL_VERSION));
-	Logger::Debug(loggerName, (char*)glGetString(GL_VENDOR));
-
-	return result;
+	/*Logger::Debug(loggerName, (char*)glGetString(GL_VERSION));
+	Logger::Debug(loggerName, (char*)glGetString(GL_VENDOR));*/
 }
 
 void Graphics_impl::QueueForRendering(MinionModel* minionModel)
@@ -163,7 +149,7 @@ void Graphics_impl::QueueForRendering(MinionModel* minionModel)
 //
 //}
 
-void Graphics_impl::UpdateGraphics(float dt)
+void Graphics_impl::UpdateGraphics(long milliseconds)
 {
 
 }
@@ -172,11 +158,15 @@ void Graphics_impl::RenderGraphics()
 	//Clear Previous stuff on backbuffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (!this->defaultCamera)
+		// Event callback?
+		return;
+
 	////Save shadowmaps to texture
 	//this->shadowmapRenderer.ProcessQueuedModels();
 	//
 	////Perform the geometry pass with the deferred renderer
-	this->deferredRenderer.ExcecuteGeometryPass();
+	this->deferredRenderer.ExcecuteGeometryPass(this->defaultCamera);
 	//
 	////Add lighting to the scene
 	//this->deferredRenderer.ExcecuteLightPass();
@@ -198,12 +188,14 @@ MinionModel* Graphics_impl::CreateModel_FromFile(const char* file)
 {
 	std::string f = file;
 	Mesh *m = new Mesh();
-	if (m->CreateMesh(f))
+	try
 	{
+		m->CreateMesh(f);
+
 		this->models.push_back(m);
 		return this->models[this->models.size() - 1];
 	}
-	else
+	catch (...)
 	{
 		delete m;
 	}
@@ -231,36 +223,30 @@ MinionModel* Graphics_impl::CreateModel_Sphere(float radius)
 	this->models.push_back(m);
 	return this->models[this->models.size() - 1];
 }	
-MinionModel* Graphics_impl::CreateModel_Triangle(float height, float width)
+MinionModel* Graphics_impl::CreateModel_Triangle(const Vec3& v1, const Vec3& v2, const Vec3& v3)
 {
-	Model *m = new Triangle(height, width);
+	Model *m = new Triangle(v1, v2, v3);
 	this->models.push_back(m);
 	return this->models[this->models.size() - 1];
 }
 
-const std::string& Graphics_impl::GetLastError() const
-{
-	return this->errorstr;
-}
 
-
-void Graphics_impl::SetClearColor(float r, float g, float b)
+void Graphics_impl::System_SetClearColor(float r, float g, float b)
 {
 	if (this->graphicsIsInitiated)
 	{
 		glClearColor(r, g, b, 1.0f);
 	}
 }
-void Graphics_impl::SetEnableLogging(bool toggle)
+void Graphics_impl::System_SetDefaultCamera(std::shared_ptr<MinionCamera> camera)
 {
-	if (!this->logging)
-	{
-		this->logging = toggle;
-
-		Logger::CreateLogger(loggerName.c_str(), "");
-	}
+	this->defaultCamera = camera;
 }
-MinionWindow* Graphics_impl::GetWindow()
+void Graphics_impl::System_SetNotificationCallback(NotificationCallback callback)
+{
+	this->notificationCallback = callback ? callback : Defaults::NotificationCallback;
+}
+MinionWindow* Graphics_impl::System_GetWindow()
 {
 	return this->window;
 }
@@ -271,14 +257,14 @@ MinionWindow* Graphics_impl::GetWindow()
 /*****************************************************************************************/
 /********************************* PRIVATE METHODS ***************************************/
 /*****************************************************************************************/
-MinionErrorCode Graphics_impl::InitializeWindow(unsigned int width, unsigned int height, const char* title)
+void Graphics_impl::InitializeWindow(unsigned int width, unsigned int height, const char* title)
 {
 	//Use gflw to create window
 	/* Initialize the library */
 	if (glfwInit() == GLFW_FALSE)
 	{
 		(*window) = nullptr;
-		return MinionErrorCode_FAIL;
+		throw MinionGraphicsException("Failed to initialize GLFW!", MinionGraphicsException::ErrorCode_FailedToInitializeGLFW);
 	}
 	
 	/* Creates a windowed mode window and its OpenGL context */
@@ -288,31 +274,30 @@ MinionErrorCode Graphics_impl::InitializeWindow(unsigned int width, unsigned int
 	{
 		glfwTerminate();
 		(*window) = nullptr;
-		return MinionErrorCode_FAIL;
+		throw MinionGraphicsException("Failed to initialize render window!", MinionGraphicsException::ErrorCode_FailedToInitializeRenderWindow);
 	}
 
 	glfwMakeContextCurrent(glfwWindow);
 
 	this->window = new Window_impl(glfwWindow);
 
-	return MinionErrorCode_SUCESS;
 }
-MinionErrorCode Graphics_impl::InitializeOpenGL()
+void Graphics_impl::InitializeOpenGL()
 {
-	if (this->graphicsIsInitiated)	return MinionErrorCode_SUCESS;
-	if (glfwInit() == GL_FALSE)		return MinionErrorCode_FAIL;
+	if (!this->window)
+		throw MinionGraphicsException("No window created. Must create a window before initializing graphics.", MinionGraphicsException::ErrorCode_FailedToInitializeGraphics);
 
-	//We need to make sure the window is the current context before initializing
+	if (this->graphicsIsInitiated)	return;
 	
+	//We need to make sure the window is the current context before initializing
 	glfwMakeContextCurrent(*this->window);
 
 	//--------------- Initiate GLEW
 	GLenum glewErr = glewInit();
 	if (glewErr != GLEW_OK)
 	{
-		this->errorstr = (const char*)glewGetErrorString(glewErr);
-		if (this->logging)	Logger::Debug(loggerName, this->errorstr.c_str());
-			return MinionErrorCode_FAIL;
+		//if (this->logging)	Logger::Debug(loggerName, (const char*)glewGetErrorString(glewErr));
+		throw MinionGraphicsException((const char*)glewGetErrorString(glewErr), MinionGraphicsException::ErrorCode_FailedToInitializeGLEW);
 	}
 	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -320,25 +305,30 @@ MinionErrorCode Graphics_impl::InitializeOpenGL()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+#ifdef _DEBUG
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+#endif
 
 	this->graphicsIsInitiated = true;
-
-	return MinionErrorCode_SUCESS;
 }
-MinionErrorCode Graphics_impl::InitializeRenderers()
+void Graphics_impl::InitializeRenderers()
 {
-	if (this->window)
-	{ 
-		if (this->deferredRenderer.Initialize(this->window->GetWidth(), this->window->GetHeight()) == 0)
+	try
+	{
+		if (this->window)
 		{
-			this->errorstr = this->deferredRenderer.GetErrorStr();
-			if (this->logging)	Logger::Debug(loggerName, this->errorstr.c_str());
-			debug::StdStreamPrint(this->errorstr.c_str());
-			return MinionErrorCode_FAIL;
+			this->deferredRenderer.Initialize(this->window->GetWidth(), this->window->GetHeight());
+			//this->guiRenderer;
+			//this->shadowmapRenderer;
 		}
-		//this->guiRenderer;
-		//this->shadowmapRenderer;
 	}
-	return MinionErrorCode_SUCESS;
+	catch (ShaderProgramException& e)
+	{
+		std::string tmp = "PATH: " + e.path;
+		tmp += "\n";
+		tmp += "WHAT: " + std::string(e.what());
+		tmp += "\n";
+		throw MinionGraphicsException(tmp.c_str(), MinionGraphicsException::ErrorCode_FailedToInitializeRenderer);
+	}
 }

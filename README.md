@@ -1,7 +1,7 @@
 # Minion Madness
 A top-down shooter game inspired by Alien shooter (http://www.sigma-team.net/games/action/alien-shooter.html) and the Minions movie (http://www.imdb.com/title/tt2293640/).
 
-The goal of this project is to create a stable game by myselfe, that i can add to my portfolio and will be available at my site http://www.dennisandersen.se. 
+The goal of this project is to create a fun and stable game for my son and also try rendering/network nad other techniques used in a game
 
 A single/multiplayer game developed in C++, C# and Python.
 The game will be suported on Windows, Android, Mac and Linux.

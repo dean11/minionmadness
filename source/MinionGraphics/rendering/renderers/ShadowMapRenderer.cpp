@@ -7,30 +7,8 @@ ShadowMapRenderer::ShadowMapRenderer()
 ShadowMapRenderer::~ShadowMapRenderer()
 {
 	
-}	
-void ShadowMapRenderer::Release()
-{
-
 }
-int ShadowMapRenderer::Initialize(int width, int height)
-{
-	return 1;
-}
-void ShadowMapRenderer::QueueModel(Model* m)
-{
-	if (this->modelQueueLenght < this->modelQueue.size())
-	{
-		this->modelQueue[modelQueueLenght] = m;
-		this->modelQueueLenght++;
-	}
-	else
-	{
-		this->modelQueue.push_back(m);
-		this->modelQueueLenght++;
-	}
-}
-
-void ShadowMapRenderer::ProcessQueuedModels()
+void ShadowMapRenderer::ProcessRenderQueue(std::shared_ptr<MinionCamera>& camera)
 {
 	this->shaderProgram.UseShaderProgram();
 	//Set scene data :View, Projection, etc
@@ -43,4 +21,9 @@ void ShadowMapRenderer::ProcessQueuedModels()
 	//Reset the queuee
 	std::fill(this->modelQueue.begin(), this->modelQueue.end(), nullptr);
 	this->modelQueueLenght = 0;
+}
+
+int ShadowMapRenderer::Initialize(int width, int height)
+{
+	return 1;
 }

@@ -8,7 +8,8 @@ GUIRenderer::~GUIRenderer()
 {
 
 }
-void GUIRenderer::Release()
+
+void GUIRenderer::ProcessRenderQueue(std::shared_ptr<MinionCamera>& camera)
 {
 
 }

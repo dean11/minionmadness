@@ -7,7 +7,7 @@ Model::Model()
 	this->rotation = glm::vec3();
 	this->position = glm::vec3();
 
-	this->modelID = GID();
+	this->modelID = utilities::GID();
 }
 Model::~Model()
 {
@@ -108,3 +108,13 @@ bool Model::ShouldCastShadow() const
 {
 	return true;
 }	
+
+glm::mat4 Model::GetMatrix() const
+{
+	glm::mat4 mat;
+	mat[0];
+	mat[1];
+	mat[2] = glm::vec4(this->position, 0.0);
+	mat[3];
+	return mat;
+}

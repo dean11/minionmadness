@@ -1,7 +1,7 @@
 #ifndef MINION_MODEL_H
 #define MINION_MODEL_H
 
-namespace Minion
+namespace minion
 {
 	class MinionModel
 	{

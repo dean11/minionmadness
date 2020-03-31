@@ -4,6 +4,7 @@
 #include "../RenderTexture.h"
 #include "../ShaderProgram.h"
 #include "../../models/Model.h"
+#include "../../include/MinionCamera.h"
 #include "Renderer.h"
 
 #include <vector>
@@ -14,18 +15,13 @@ public:
 	ShadowMapRenderer();
 	virtual~ShadowMapRenderer();
 
-	void Release() override;
+	virtual void ProcessRenderQueue(std::shared_ptr<MinionCamera>& camera) override;
 
 	int Initialize(int width, int height);
-	void QueueModel(Model* m);
-	void ProcessQueuedModels();
 
 private:
 	RenderTexture renderTexture;
 	ShaderProgram shaderProgram;
-
-	std::vector<Model*> modelQueue;
-	unsigned int modelQueueLenght = 0;
 };
 
 

@@ -6,7 +6,7 @@
 class Triangle :public Model
 {
 public:
-	Triangle(float height, float width);
+	Triangle(const Vec3& v1, const Vec3& v2, const Vec3& v3);
 	virtual~Triangle();
 
 	void Draw() override;

@@ -1,10 +1,7 @@
 #include "Window_impl.h"
 
-#include "../Utilities/logger.h"
-
 #include <algorithm>
 
-const std::string loggerName = "MinionWindow";
 
 //------------------- From MinionWindow --------------------------
 MinionWindow::~MinionWindow(){}
@@ -14,12 +11,9 @@ MinionWindow::~MinionWindow(){}
 Window_impl::Window_impl(GLFWwindow* window)
 {
 	if (!window) return;
-
+	
 	this->window = window;
-	//this->data = 0;
-	//this->self = this;
 	glfwSetWindowUserPointer(window, this);
-	//windowCollection.push_back(this);
 }
 Window_impl::~Window_impl()
 {
@@ -32,20 +26,19 @@ Window_impl::~Window_impl()
 
 	glfwDestroyWindow(this->window);
 }
-MinionWindow::WindowReturnCode Window_impl::Run(std::function<MinionWindow::CallbackReturnCode(MinionWindow*)> fnc)
+void Window_impl::Run(std::function<MinionWindow::CallbackReturnCode(MinionWindow*)> fnc)
 {
 	if (!fnc)
-		Logger::Debug(loggerName, "Must specify a callback function when creating a window");
+		throw exception::MinionWindowException("Must specify a callback function when creating a window", WindowErrorCode_Failed_NoCallback);
 
 	bool runing = true;
-	MinionWindow::WindowReturnCode returnResult = MinionWindow::WindowReturnCode_Success;
 
 	do
 	{
 		try
 		{
 			glfwPollEvents();
-
+			
 			if (glfwWindowShouldClose(window))
 			{
 				runing = false;
@@ -53,19 +46,22 @@ MinionWindow::WindowReturnCode Window_impl::Run(std::function<MinionWindow::Call
 			else
 			{
 				MinionWindow::CallbackReturnCode res = fnc(this);
-				if (res == Minion::MinionWindow::CallbackReturnCode_Close)
+				if (res == minion::MinionWindow::CallbackReturnCode_Close)
 						runing = false;
 			}
 		}
 		catch (std::exception& e)
 		{
-			Logger::Debug(loggerName, "LINE %i - Exception message:%s", __LINE__, e.what());
-			returnResult = WindowReturnCode_Failed;
+			throw exception::MinionWindowException(std::string("LINE " + std::to_string(__LINE__) + " - Exception message: " + e.what()).c_str(), WindowErrorCode_UNKNOWN);
 		}
 	} while (runing);
 
-	return returnResult;
 }
+void Window_impl::Close()
+{
+	glfwSetWindowShouldClose(this->window, 1);
+}
+
 void Window_impl::SetOnClose(OnClose fnc)		  
 {
 	this->onClose = fnc;
@@ -187,23 +183,23 @@ void Window_impl::SetWindowPosition(WindowPosition pos)
 	int y = 0;
 	switch (pos)
 	{
-	case Minion::MinionWindow::WindowPosition_TopLeft:
+	case minion::MinionWindow::WindowPosition_TopLeft:
 		break;
-	case Minion::MinionWindow::WindowPosition_TopRight:
+	case minion::MinionWindow::WindowPosition_TopRight:
 		break;
-	case Minion::MinionWindow::WindowPosition_Center:
+	case minion::MinionWindow::WindowPosition_Center:
 		break;
-	case Minion::MinionWindow::WindowPosition_BottomLeft:
+	case minion::MinionWindow::WindowPosition_BottomLeft:
 		break;
-	case Minion::MinionWindow::WindowPosition_BottomRight:
+	case minion::MinionWindow::WindowPosition_BottomRight:
 		break;
-	case Minion::MinionWindow::WindowPosition_Left:
+	case minion::MinionWindow::WindowPosition_Left:
 		break;
-	case Minion::MinionWindow::WindowPosition_Right:
+	case minion::MinionWindow::WindowPosition_Right:
 		break;
-	case Minion::MinionWindow::WindowPosition_Top:
+	case minion::MinionWindow::WindowPosition_Top:
 		break;
-	case Minion::MinionWindow::WindowPosition_Bottom:
+	case minion::MinionWindow::WindowPosition_Bottom:
 		break;
 	default:
 		break;
@@ -217,6 +213,21 @@ void Window_impl::SetWindowPosition(WindowPosition pos)
 void Window_impl::SetAsMainWindow()
 {
 	glfwMakeContextCurrent(this->window);
+}
+void Window_impl::SetOnKeyboardEvent(OnKey fnc)
+{
+	this->onKey = fnc;
+	if (!fnc)
+	{
+		glfwSetKeyCallback(window, nullptr);
+		return;
+	}
+
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		Window_impl *tmp = (Window_impl*)glfwGetWindowUserPointer(window);
+		tmp->onKey(tmp, key, scancode, action, mods);
+	});
 }
 
 unsigned int Window_impl::GetWidth() const

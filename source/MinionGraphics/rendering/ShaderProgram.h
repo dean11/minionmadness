@@ -10,6 +10,15 @@
 class ShaderProgram
 {
 public:
+	enum ErrorCode
+	{
+		ErrorCode_Sucess,
+		ErrorCode_Failed,
+		ErrorCode_UnknownError,
+		ErrorCode_FailedToLoadFile,
+		ErrorCode_FailedToCompile,
+		ErrorCode_NoShaders,
+	};
 	enum ShaderType
 	{
 		ShaderType_vertex = GL_VERTEX_SHADER,
@@ -47,15 +56,15 @@ public:
 	ShaderProgram(const char* shaderProgramName = "unamed");
 	virtual~ShaderProgram();
 
-	int CreateShaderProgramFromFile(const ShaderProgramInitDesc& desc);
-	int CreateShaderProgramFromSource(const ShaderProgramInitDesc& desc);
+	void CreateShaderProgramFromFile(const ShaderProgramInitDesc& desc);
+	void CreateShaderProgramFromString(const ShaderProgramInitDesc& desc);
 
 	void Release();
 
 	//Sets the shader program to the gpu
 	void UseShaderProgram();
 
-	const std::string& GetErrorStr() const;
+	std::string ToString(ShaderType);
 
 public:
 	inline operator GLuint() { return shaderProgramHandle; }
@@ -72,8 +81,23 @@ private:
 private:
 	GLuint shaderProgramHandle;
 	const char* shaderProgramName;
-	std::string lastError;
+	ShaderProgramInitDesc initDesc;
 };
 
+class ShaderProgramException :public std::runtime_error
+{
+public:
+	ShaderProgramException(const char* msg, ShaderProgram::ErrorCode _code)
+		:std::runtime_error(msg), code(_code)
+	{}
+	ShaderProgramException(const char* msg, ShaderProgram::ErrorCode _code, ShaderProgram::ShaderType _type)
+		:std::runtime_error(msg), code(_code), type(_type)
+	{}
+	virtual~ShaderProgramException(){}
+
+	ShaderProgram::ShaderType type;
+	ShaderProgram::ErrorCode code;
+	std::string path;
+};
 
 #endif // !SHADER_PROGRAM

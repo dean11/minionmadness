@@ -14,15 +14,13 @@ public:
 	DeferredRenderer();
 	virtual~DeferredRenderer();
 
-	void Release() override;
-	void Clean() override;
+	virtual void ProcessRenderQueue(std::shared_ptr<MinionCamera>& camera) override;
 
-	int Initialize(int width, int height);
-	void QueueModel(Model* m);
+	void Initialize(int width, int height);
 
-	void ExcecuteGeometryPass();
-	void ExcecuteLightPass();
-	void ExcecuteFinalPass();
+	void ExcecuteGeometryPass(std::shared_ptr<MinionCamera>& camera);
+	void ExcecuteLightPass(std::shared_ptr<MinionCamera>& camera);
+	void ExcecuteFinalPass(std::shared_ptr<MinionCamera>& camera);
 	
 private:
 	ShaderProgram shaderGeometryPass;
@@ -36,8 +34,7 @@ private:
 	GLuint normalTextureID;
 	GLuint shadowTextureID;
 
-	std::vector<Model*> modelQueue;
-	unsigned int modelQueueLenght = 0;
+	GLuint worldViewProjectionID;
 };
 
 

@@ -1,15 +1,16 @@
 #include "Triangle.h"
-#include <NoEdgeUtilities.h>
-using namespace Minion;
+#include <utilities.h>
+using namespace minion;
 
-Triangle::Triangle(float height, float width)
+Triangle::Triangle(const Vec3& v1, const Vec3& v2, const Vec3& v3)
 {
-	float positionData[] = 
+	Vec3 positionData[] =
 	{
-		-0.8f, -0.8f, 0.0f,
-		0.8f, -0.8f, 0.0f,
-		0.0f, 0.8f, 0.0f 
+		v1, v2, v3
 	};
+
+	auto t = sizeof(positionData);
+
 	float colorData[] = 
 	{
 		1.0f, 0.0f, 0.0f,
@@ -24,10 +25,10 @@ Triangle::Triangle(float height, float width)
 	GLuint colorBufferHandle = vboHandles[1];
 
 	glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), positionData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(positionData), positionData, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), colorData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colorData), colorData, GL_STATIC_DRAW);
 
 	// Create and set-up the vertex array object
 	glGenVertexArrays(1, &vaoHandle);
@@ -42,7 +43,7 @@ Triangle::Triangle(float height, float width)
 	glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
 
-	glDeleteBuffers(NoEdgeUtilies::StaticArray::NumElementsOf(vboHandles), vboHandles);
+	//glDeleteBuffers(NoEdgeUtilies::StaticArray::NumElementsOf(vboHandles), vboHandles);
 }
 Triangle::~Triangle()
 { }
@@ -56,4 +57,5 @@ void Triangle::Release()
 {
 	if (this->vaoHandle)
 		glDeleteVertexArrays(1, &this->vaoHandle);
+	this->vaoHandle = 0;
 }

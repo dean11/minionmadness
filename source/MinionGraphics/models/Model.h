@@ -2,11 +2,12 @@
 #define MODELL_H
 
 #include "../include/MinionModel.h"
+#include "../include/MinionMath.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <bullet/btBulletCollisionCommon.h>
+#include <btBulletCollisionCommon.h>
 
-using namespace Minion;
+using namespace minion;
 
 class Model	:public MinionModel
 {
@@ -22,7 +23,13 @@ public:
 	virtual bool ShouldCollide() const;
 	virtual bool ShouldCastShadow() const;
 
+	//virtual GLuint VertexBuffer() const;
+	//virtual GLuint NormalBuffer() const;
+	//virtual GLuint UVBuffer() const;
+
 	operator int() {return this->modelID;}
+
+	glm::mat4 GetMatrix() const;
 
 public: /* Methods from MinionModel */
 	/***************************************************************************/

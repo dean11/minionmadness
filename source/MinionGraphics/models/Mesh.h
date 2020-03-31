@@ -5,14 +5,14 @@
 
 #include <string>
 #include <map>
-#include <NoEdgeUtilities.h>
+#include <utilities.h>
 
 class Mesh :public Model
 {
 public:
 	struct MeshData
 	{
-		NoEdgeUtilies::DynamicMemory::ReferenceCount counter;
+		utilities::DynamicMemory::ReferenceCount counter;
 		Mesh* mesh;
 	};
 	enum MinionMeshType
@@ -26,7 +26,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	int CreateMesh(const std::string& path, MinionMeshType type = MinionMeshType_OBJ);
+	void CreateMesh(const std::string& path, MinionMeshType type = MinionMeshType_OBJ);
 
 	void Draw() override;
 	void Release() override;

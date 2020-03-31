@@ -1,16 +1,16 @@
 #ifndef GRAPHICS_WINDOW_H
 #define GRAPHICS_WINDOW_H
 
-#include "autolink_windows.h"
 
-#include <GL/glfw3.h>
 #include <vector>
 
 #include "include/MinionWindow.h"
-#include <NoEdgeUtilities.h>
-#include <GID.h>
 
-using namespace Minion;
+#include <utilities.h>
+#include <GID.h>
+#include <GLFW/glfw3.h>
+
+using namespace minion;
 
 class Window_impl :public MinionWindow
 {
@@ -19,7 +19,8 @@ public:
 	virtual~Window_impl();
 
 	operator GLFWwindow*() { return this->window; }
-	WindowReturnCode Run(std::function<CallbackReturnCode(MinionWindow*)>) override;
+	void Run(std::function<CallbackReturnCode(MinionWindow*)>) override;
+	void Close() override;
 
 	void SetOnClose(OnClose) override;
 	void SetOnFocus(OnFocus) override;
@@ -27,6 +28,7 @@ public:
 	void SetOnPosition(OnPosition) override;
 	void SetOnRefresh(OnRefresh) override;
 	void SetOnSize(OnSize) override;
+	void SetOnKeyboardEvent(OnKey) override;
 
 	void SetWindowTitle(const char* title) override;
 	void SetWindowSize(unsigned int width, unsigned int height) override;
@@ -50,6 +52,7 @@ private:
 	OnPosition onPosition;
 	OnRefresh onRefresh;
 	OnSize onSize;
+	OnKey onKey;
 };
 
 

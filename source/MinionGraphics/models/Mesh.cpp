@@ -12,7 +12,7 @@ Mesh::~Mesh()
 
 }
 
-int Mesh::CreateMesh(const std::string& _path, MinionMeshType type)
+void Mesh::CreateMesh(const std::string& _path, MinionMeshType type)
 {
 	this->path = _path;
 
@@ -26,8 +26,6 @@ int Mesh::CreateMesh(const std::string& _path, MinionMeshType type)
 		//Load the mesh
 
 	}
-
-	return MinionErrorCode_SUCESS;
 }
 void Mesh::Draw()
 {

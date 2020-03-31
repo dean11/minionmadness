@@ -3,8 +3,10 @@
 
 #include <functional>
 #include <memory>
+#include <exception>
+#include <stdexcept>
 
-namespace Minion
+namespace minion
 {
 	/*
 	*	MinionWindow is a window wrapper (that uses GLFW) used to create a window and manage event related to the created window.
@@ -25,10 +27,13 @@ namespace Minion
 			WindowPosition_Top,
 			WindowPosition_Bottom,
 		};
-		enum WindowReturnCode
+		enum WindowErrorCode
 		{
-			WindowReturnCode_Success,
-			WindowReturnCode_Failed,
+			WindowErrorCode_Success,
+			WindowErrorCode_Failed,
+			WindowErrorCode_UNKNOWN,
+
+			WindowErrorCode_Failed_NoCallback,
 		};
 		enum CallbackReturnCode
 		{
@@ -46,6 +51,7 @@ namespace Minion
 		typedef std::function<void(MinionWindow* sender, int x, int y)> OnPosition;
 		typedef std::function<void(MinionWindow* sender)> OnRefresh;
 		typedef std::function<void(MinionWindow* sender, int width, int height)> OnSize;
+		typedef std::function<void(MinionWindow* sender, int key, int scancode, int action, int mods)> OnKey;
 
 	public:
 
@@ -54,7 +60,8 @@ namespace Minion
 		* This function is blocking.
 		* Return value of the callback will tell the window what to do next.
 		*/
-		virtual WindowReturnCode Run(std::function<CallbackReturnCode(MinionWindow*)>) = 0;
+		virtual void Run(std::function<CallbackReturnCode(MinionWindow*)>) = 0;
+		virtual void Close() = 0;
 
 		virtual void SetOnClose(OnClose) = 0;
 		virtual void SetOnFocus(OnFocus) = 0;
@@ -62,6 +69,7 @@ namespace Minion
 		virtual void SetOnPosition(OnPosition) = 0;
 		virtual void SetOnRefresh(OnRefresh) = 0;
 		virtual void SetOnSize(OnSize) = 0;
+		virtual void SetOnKeyboardEvent(OnKey) = 0;
 
 		virtual void SetWindowTitle(const char* title) = 0;
 		virtual void SetWindowSize(unsigned int width, unsigned int height) = 0;
@@ -76,6 +84,22 @@ namespace Minion
 		virtual int GetPosY() const = 0;
 		virtual void GetPosition(int& x, int& y) const = 0;
 	};
+
+	namespace exception
+	{
+		class MinionWindowException :public std::runtime_error
+		{
+		public:
+			MinionWindowException(const char* msg, MinionWindow::WindowErrorCode)
+				:std::runtime_error(msg)
+			{}
+			virtual~MinionWindowException()
+			{}
+
+			MinionWindow::WindowErrorCode code;
+		};
+
+	}
 }
 
 

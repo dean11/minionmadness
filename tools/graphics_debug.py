@@ -14,7 +14,7 @@ def main():
 	arc = "x86"
 	debug = "Release"
 	outputName = "MinionGraphics.trace"
-	filename = "MinionGraphics.exe"
+	filename = "MinionGraphics_x86_d.exe"
 	apitraceDir = "D:/apitrace/x86/bin/" 
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "drf:o:x:", ["x64", "x86", "debug", "file="])
@@ -41,7 +41,7 @@ def main():
 		elif opt == "-x":
 			if arg == "-x86" or arg == "-x64":
 				arc = "x" + arg
-				pitraceDir = "D:/apitrace/x" + arg + "/bin/"
+				apitraceDir = "D:/apitrace/x" + arg + "/bin/"
 		elif opt == "-o":
 			outputName = arg
 	
@@ -57,7 +57,7 @@ def main():
 
 	call(final)
 	
-	call(apitraceDir + "qapitrace " + outputName)
+	call(apitraceDir + "apitrace " + outputName)
 	
 if __name__ == "__main__":
     main()

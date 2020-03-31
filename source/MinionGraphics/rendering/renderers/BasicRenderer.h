@@ -10,6 +10,8 @@ public:
 	BasicRenderer();
 	virtual~BasicRenderer();
 
+	virtual void ProcessRenderQueue() override;
+
 private:
 	ShaderProgram basicShader;
 };

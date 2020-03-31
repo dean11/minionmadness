@@ -1,17 +1,24 @@
 #include "Camera.h"
+#include "../common_graphic_utilities.h"
 
-namespace Minion
+namespace minion
 {
-	Camera::Camera()
+	std::shared_ptr<MinionCamera> MinionCamera::CreateCamera(float FoV, float aspect, float nearClip, float farClip, const glm::vec3& p, const glm::vec3& r)
+	{
+		return std::shared_ptr<MinionCamera>(new Camera(FoV, aspect, nearClip, farClip, p, r));
+	}
+
+
+	Camera::Camera(float FoV, float aspect, float nearClip, float farClip, const glm::vec3& p, const glm::vec3& r)
 	{
 		// Set to defaults
-		this->position			= vec3(0.0f, 0.0f, 0.0f);
-		this->rotation			= vec3(0.0f, 0.0f, 0.0f);
+		this->position			= p;
+		this->rotation			= r;
 		this->up				= vec3(0.0f, 1.0f, 0.0f);
-		this->aspect			= 0.0f;
-		this->nearClip			= 1.0f;
-		this->farClip			= 10.0f;
-		this->fovAngle			= 45.0f;
+		this->aspect			= aspect;
+		this->nearClip			= nearClip;
+		this->farClip			= farClip;
+		this->fovAngle			= FoV;
 		this->viewMatrix		= mat4(1.0f);
 		this->projectionMatrix	= mat4(1.0f);
 		this->normalMatrix		= mat3(1.0f);
@@ -21,7 +28,7 @@ namespace Minion
 		this->sensPitch			= 0.4f;
 
 		// View matrix
-		this->viewMatrix = lookAt(position, rotation, up);
+		this->viewMatrix = lookAt(this->position, this->rotation, up);
 
 		// Projection matrix
 		this->projectionMatrix = perspective(this->fovAngle, this->aspect, this->nearClip, this->farClip);
@@ -94,45 +101,44 @@ namespace Minion
 			}
 		}
 	}
-
-	void Camera::RelativeMove(float translation[3])
+	void Camera::RelativeMove(const glm::vec3& v)
 	{
 		if (moveable)
 		{
 			vec3 movement;
 
 			// Get Sine and Cosine of x and y
-			float sinXRot = sin(radians(rotation.x));
-			float cosXRot = cos(radians(rotation.x));
+			float sinXRot = sin(radians(this->rotation.x));
+			float cosXRot = cos(radians(this->rotation.x));
 
-			float sinYRot = sin(radians(rotation.y));
-			float cosYRot = cos(radians(rotation.y));
+			float sinYRot = sin(radians(this->rotation.y));
+			float cosYRot = cos(radians(this->rotation.y));
 
 			// '''Set y rotation limit. 'Cannot bend more than 90 degrees up and back
 			// (This cancels out moving on the Z axis when we're looking up or down)
 			float pitchLimit = cosXRot;
 
-			if (translation[2] < 0)
+			if (v.z < 0)
 			{
 				movement.x += (sinYRot * pitchLimit);
 				movement.y += (-sinXRot);
 				movement.z += (-cosYRot * pitchLimit);
 			}
 
-			if (translation[2] > 0)
+			if (v.z > 0)
 			{
 				movement.x += (-sinYRot * pitchLimit);
 				movement.y += (sinXRot);
 				movement.z += (cosYRot * pitchLimit);
 			}
 
-			if (translation[0] < 0)
+			if (v.x < 0)
 			{
 				movement.x += (-cosYRot);
 				movement.z += (-sinYRot);
 			}
 
-			if (translation[0] > 0)
+			if (v.x > 0)
 			{
 				movement.x += (cosYRot);
 				movement.z += (sinYRot);
@@ -146,18 +152,21 @@ namespace Minion
 		}
 	}
 
-	float* Camera::GetView4x4()
+	void Camera::SetPosition(const glm::vec3& position)
 	{
-		return &this->viewMatrix[0].x;
+		this->position = position;
 	}
-	float* Camera::GetProjection4x4()
-	{
-		return &this->projectionMatrix[0].x;
-	}
-	float* Camera::GetViewProjection4x4()
-	{
-		mat4 vp = this->viewMatrix * this->projectionMatrix;
 
-		return &vp[0].x;
+	glm::mat4& Camera::GetView4x4(glm::mat4& m)
+	{
+		return (m = this->viewMatrix);
+	}
+	glm::mat4& Camera::GetProjection4x4(glm::mat4& m)
+	{
+		return (m = this->projectionMatrix);
+	}
+	glm::mat4& Camera::GetViewProjection4x4(glm::mat4& m)
+	{
+		return (m = this->viewMatrix * this->projectionMatrix);
 	}
 }

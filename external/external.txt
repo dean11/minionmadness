@@ -1,6 +1,0 @@
-External libraries/api used
-
-* glm
-* glew (The OpenGL Extension Wrangler Library)
-* glfw
-* bullet
